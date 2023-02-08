@@ -12,12 +12,9 @@ know once WWT is set up.
 import json
 import time
 
+from packaging.version import Version
 from qtpy.QtWebEngineWidgets import QWebEngineView, QWebEnginePage, WEBENGINE
-from qtpy import QtWidgets, QtGui, QtCore
-try:
-    from qtpy import PYQT6, PYSIDE6
-except:
-    PYQT6, PYSIDE6 = False, False
+from qtpy import QtWidgets, QtGui, QtCore, QT_VERSION
 
 from .app import get_qapp
 from .core import BaseWWTWidget
@@ -153,7 +150,7 @@ class WWTQtWidget(QtWidgets.QWidget):
         super(WWTQtWidget, self).__init__(parent=parent)
 
         self.page = WWTQWebEnginePage()
-        if PYQT6 or PYSIDE6:
+        if Version(QT_VERSION).major >= 6:
             self.web = WWTWebEngineView(self.page)
         else:
             self.web = WWTWebEngineView()
