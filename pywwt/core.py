@@ -210,11 +210,11 @@ class BaseWWTWidget(HasTraits):
         # builtin-image-sets.wtml (for the time being), so we want to make sure
         # that the frontend agrees with us about which named imagesets are
         # available.
-        self._send_msg(
-            event="load_image_collection",
-            url=DEFAULT_SURVEYS_URL,
-            threadId=self._next_seq(),
-        )
+        # self._send_msg(
+        #     event="load_image_collection",
+        #     url=DEFAULT_SURVEYS_URL,
+        #     threadId=self._next_seq(),
+        # )
 
         # Forcibly set up the app's configuration to match the pywwt default.
         # Most things align, but not everything. Note that fg/bg imageset names
