@@ -185,7 +185,7 @@ class BaseWWTWidget(HasTraits):
         self._seqNum = 0
         self._futures = {}
 
-        self._available_layers = get_imagery_layers(DEFAULT_SURVEYS_URL)
+        self._available_layers = []
         self._available_hips_catalog_names = []
         self.imagery = ImageryLayers(self._available_layers)
         self.solar_system = SolarSystem(self)
@@ -605,7 +605,8 @@ class BaseWWTWidget(HasTraits):
     #                         '(`bool`)').tag(wwt='showAltAzGridText', wwt_reset=True)
 
     background = Unicode(
-        "Hydrogen Alpha Full Sky Map",
+        None,
+        allow_none=True,
         help="The layer to show in the background (`str`)",
     ).tag(wwt=None, wwt_reset=True)
 
@@ -667,7 +668,8 @@ class BaseWWTWidget(HasTraits):
     ).tag(wwt="showEclipticGrid", wwt_reset=True)
 
     foreground = Unicode(
-        "Digitized Sky Survey (Color)",
+        None,
+        allow_none=True,
         help="The layer to show in the foreground (`str`)",
     ).tag(wwt=None, wwt_reset=True)
 
