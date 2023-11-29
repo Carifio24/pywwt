@@ -1238,6 +1238,30 @@ class BaseWWTWidget(HasTraits):
         """
         self._send_msg(event="resume_tour")
 
+    def current_view_as_tour(self):
+        """
+        Create a one-slide tour of the current view.
+        This function returns a future whose result will be
+        the reply from the app.
+        """
+
+        return self._send_into_future(type="get_view_as_tour")
+
+    def export_view_as_tour(self, filepath):
+        """
+        Export a one-slide tour of the current view to the given filepath.
+
+        Parameters
+        ----------
+        filepath: `str`
+            The desired filepath for the output tour file.
+        """
+
+        loop = asyncio.get_event_loop()
+        result = loop.run_until_complete(self.current_view_as_tour())
+        with open(filepath, 'w') as f:
+            f.write(result["tourXml"])
+
     # Instrumental FOV support (built on the annotation support)
 
     def add_fov(self, telescope, center=None, rotate=0 * u.rad, **kwargs):
