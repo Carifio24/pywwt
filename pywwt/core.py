@@ -1245,7 +1245,7 @@ class BaseWWTWidget(HasTraits):
         the reply from the app.
         """
 
-        return self._send_into_future(type="get_view_as_tour")
+        return self._send_into_future(type="get_view_as_tour", timeout=10)
 
     def export_view_as_tour(self, filepath):
         """
@@ -1257,10 +1257,13 @@ class BaseWWTWidget(HasTraits):
             The desired filepath for the output tour file.
         """
 
-        loop = asyncio.get_event_loop()
-        result = loop.run_until_complete(self.current_view_as_tour())
-        with open(filepath, 'w') as f:
-            f.write(result["tourXml"])
+        def write_result(fut):
+            result = fut.result()
+            with open(filepath, 'w') as f:
+                f.write(result["tourXml"])
+        fut = self.current_view_as_tour()
+        fut.add_done_callback(write_result)
+        return fut
 
     # Instrumental FOV support (built on the annotation support)
 
