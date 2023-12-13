@@ -1257,6 +1257,7 @@ class BaseWWTWidget(HasTraits):
             The desired filepath for the output tour file.
         """
 
+        nest_asyncio.apply()
         loop = asyncio.get_event_loop()
         result = loop.run_until_complete(self.current_view_as_tour())
         with open(filepath, 'w') as f:
