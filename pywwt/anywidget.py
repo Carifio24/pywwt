@@ -28,8 +28,10 @@ for root, dirs, files in os.walk(css_dir):
             break
 
 class WWTAnyWidget(AnyWidget, BaseWWTWidget):
-    _esm = esm_location
-    _css = css_location
+    # _esm = esm_location
+    # _css = css_location
+    _esm = Path(__file__).parent / "main.js"
+    _css = Path(__file__).parent / "style.css"
 
     def __init__(self, hide_all_chrome=False):
         AnyWidget.__init__(self)
