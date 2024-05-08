@@ -303,7 +303,7 @@ class BaseWWTWidget(HasTraits):
         else:
             raise ViewerNotAvailableError()
 
-    def _send_into_future(self, timeout=30, **kwargs):
+    def _send_into_future(self, timeout=30, loop=None, **kwargs):
         """
         Send a message and return an asyncio Future that will resolve when the
         message receives a reply from the app. The value of the future will be
@@ -319,7 +319,7 @@ class BaseWWTWidget(HasTraits):
         """
 
         seq = self._next_seq()
-        loop = asyncio.get_running_loop()
+        loop = loop or asyncio.get_running_loop()
         fut = loop.create_future()
 
         self._futures[seq] = fut
@@ -1238,14 +1238,14 @@ class BaseWWTWidget(HasTraits):
         """
         self._send_msg(event="resume_tour")
 
-    def current_view_as_tour(self):
+    def current_view_as_tour(self, loop=None):
         """
         Create a one-slide tour of the current view.
         This function returns a future whose result will be
         the reply from the app.
         """
 
-        return self._send_into_future(type="get_view_as_tour")
+        return self._send_into_future(loop=loop, type="get_view_as_tour")
 
     def export_view_as_tour(self, filepath):
         """
