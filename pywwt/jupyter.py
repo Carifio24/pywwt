@@ -3,6 +3,7 @@
 # because we instead use JSON messages to transmit any changes between the
 # Python and Javascript parts so that we can re-use this for the Qt client.
 
+import asyncio
 import ipywidgets as widgets
 import numpy as np
 from traitlets import Unicode, default, link, directional_link
@@ -66,7 +67,7 @@ class WWTJupyterWidget(widgets.DOMWidget, BaseWWTWidget):
 
     _appUrl = Unicode("").tag(sync=True)
 
-    def __init__(self, hide_all_chrome=False, app_url=None, surveys_url=None):
+    def __init__(self, block_until_ready=False, hide_all_chrome=False, app_url=None, surveys_url=None):
         # Set up Kernel Data Relay expedited message processing.
         _maybe_perpetrate_mega_kernel_hack()
 
@@ -89,6 +90,12 @@ class WWTJupyterWidget(widgets.DOMWidget, BaseWWTWidget):
         self.on_msg(self._on_ipywidgets_message)
 
         BaseWWTWidget.__init__(self, hide_all_chrome=hide_all_chrome, surveys_url=surveys_url)
+
+        if block_until_ready:
+            while True:
+                _ = asyncio.sleep(0)
+                if self._appAlive:
+                    break
 
     def _on_ipywidgets_message(self, widget, content, buffers):
         """
